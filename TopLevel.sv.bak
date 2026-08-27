@@ -1,0 +1,21 @@
+module top(
+
+
+);
+
+VGADriver VGA(
+	//Inputs
+	.Clock50MHz(),
+	.reset_n(),
+	.RedControl(), //2 bits
+	.GreenControl(), //2 bits - Chooses the colors
+	.BlueControl(), //2 bits
+	
+	//Outputs
+	.Hsync(), //Low for 96 lines, then High 704 lines - Hsync Line
+	.Vsync(), //LOW for 2 lines, then High for 523 lines - VSync Line
+	.RedDisplay(),
+	.GreenDisplay(), // Color sent to VGA Cable
+	.BlueDisplay()
+
+);

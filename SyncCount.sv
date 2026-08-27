@@ -1,0 +1,109 @@
+module SyncCount(
+	input logic enable_n,
+	input logic clk,
+	input logic reset_n,
+	
+	output logic HDisplay, //1 bit signal high during display interval c only (640)
+	output logic VDisplay,// 1 bit signal high during display interval c only (480)
+	output logic HSync, // Low for 96 clock cycles and high for 704 cycles
+	output logic VSync, // Low for 2 clock cycles and high for 523 cycles, increment when one full HSync cycle
+	output logic [9:0] x_pos,
+	output logic [9:0] y_pos
+
+);
+
+	logic [9:0] count1;
+	logic [9:0] count2;
+	logic compare1;
+	logic compare2;
+	
+	assign x_pos = count1;
+	assign y_pos = count2;
+
+//HDisplay - Display Interval
+always_ff @(posedge clk or negedge reset_n) begin
+	if (!reset_n) begin
+		HDisplay <= 1'b0;
+	end else if (count1 == 0) begin
+		HDisplay <= 1'b0;
+	end else if (count1 == 144) begin
+		HDisplay <= 1'b1;
+	end else if (count1 == 784) begin
+		HDisplay <= 1'b0;
+	end
+end
+//VDisplay - Display Interval
+
+always_ff @(posedge clk or negedge reset_n) begin
+	if (!reset_n) begin
+		VDisplay <= 1'b0;
+	end else if (count2 == 0) begin
+		VDisplay <= 1'b0;
+	end else if (count2 == 35) begin
+		VDisplay <= 1'b1;
+	end else if (count2 == 515) begin
+		VDisplay <= 1'b0;
+	end
+end
+	
+
+//HSync Signal
+always_ff @(posedge clk or negedge reset_n) begin
+	if (!reset_n) begin
+		HSync <= 1'b0;
+	end else if (count1 == 0) begin
+		HSync <= 1'b0;
+	end else if(count1 == 96) begin
+		HSync <= 1'b1;
+	end
+end
+
+//VSync Signal
+always_ff @(posedge clk or negedge reset_n) begin
+	if (!reset_n) begin
+		VSync <= 1'b0;
+	end else if (count2 == 0) begin
+		VSync <= 1'b0;
+	end else if(count2 == 2) begin
+		VSync <= 1'b1;
+	end
+end
+
+
+
+//Instantiate a counter module and comparator to complete a full line for HSync
+Counter #(.N(10)) C1(
+	.clock(clk),
+	.reset_n(reset_n),
+	.count(count1),
+	.enable_n(enable_n),
+	.addBy(10'd1),
+	.clear_n(~compare1)
+
+);
+
+Comparator #(.N(10), .MAX_VAL(799)) Comp1(
+	.check(count1),
+	.compare(compare1)
+);
+
+
+//Tick count2 to represent when Vsync changes lines vertically
+Counter #(.N(10)) C2 (
+	.clock(clk),
+	.reset_n(reset_n),
+	.count(count2),
+	.enable_n(~compare1),
+	.addBy(10'd1),
+	.clear_n(~(compare1 & compare2))
+
+);
+
+Comparator #(.N(10), .MAX_VAL(524)) Comp2(
+	.check(count2),
+	.compare(compare2)
+
+);
+
+endmodule
+	
