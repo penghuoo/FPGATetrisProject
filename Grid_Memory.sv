@@ -14,10 +14,7 @@ module Grid_Memory(
 
 );
 
-endmodule
 
-
-/*
 //Initialize grid that acts like "memory" to store tiles and their colors. 
 logic [3:0] grid [0:19][0:9]; //2D Array colxrow 10x20 of 4 bits, (Temporary until grid memory is in FSM)
 
@@ -29,18 +26,27 @@ initial begin
 			grid[r][c] = 4'b0000;
 		end
 	end
-	
 
 end
+	
 
-	//Hard coding colored tiles
-	assign grid[19][0] = 4'd1; //Cyan
-	assign grid[19][1] = 4'd2; //Yellow
-	assign grid [10][5] = 4'd3; //Purple //Upside down
+//Reading data continuously from the grid memory with the row and col inputs that are currently pointing to
+assign vga_read_data = grid[vga_row][vga_col];
+assign fsm_read_data = grid[fsm_row][fsm_col];
+
+//When write_enable wire is 1, write into the memory grid where ever the FSM is looking at
+always_ff @(posedge clk) begin
+	if(write_enable == 1) begin
+		grid[fsm_row][fsm_col] <= fsm_write_data;
+	end
+end
+
+
+endmodule
 	
 
 
-*/
+
 
 /*
 Steps to take:
@@ -49,6 +55,12 @@ Tile Renderer: Remove grid memory and make it so it takes in color values from g
 Figure out what module to calculate vga row and col
 
 Game FSM: Uses Write_enable toggles whether FSM is writing or reading the data. Then 4 bit data is sent into the 2d array or outputted when read
+
+//Hard coding colored tiles
+	assign grid[19][0] = 4'd1; //Cyan
+	assign grid[19][1] = 4'd2; //Yellow
+	assign grid [10][5] = 4'd3; //Purple //Upside down
+	
 
 
 */
