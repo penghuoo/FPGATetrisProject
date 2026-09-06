@@ -82,7 +82,6 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to RedDisplay[1]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to RedDisplay[0]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to Vsync
 set_location_assignment PIN_P11 -to clk
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name SYSTEMVERILOG_FILE Input_Debouncer.sv
 set_global_assignment -name SYSTEMVERILOG_FILE RegisterFourBit.sv
 set_global_assignment -name SYSTEMVERILOG_FILE Parser.sv
@@ -101,3 +100,14 @@ set_global_assignment -name SYSTEMVERILOG_FILE Game_FSM.sv
 set_global_assignment -name SYSTEMVERILOG_FILE TopLevel.sv
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_location_assignment PIN_A7 -to btn_start
+set_instance_assignment -name IO_STANDARD "3.3 V SCHMITT TRIGGER" -to btn_start
+set_location_assignment PIN_AB2 -to btn_drop
+set_location_assignment PIN_AA2 -to btn_rotate
+set_location_assignment PIN_V10 -to btn_left
+set_location_assignment PIN_W10 -to btn_right
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to btn_drop
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to btn_left
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to btn_right
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to btn_rotate
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

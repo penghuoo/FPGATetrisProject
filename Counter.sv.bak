@@ -1,6 +1,5 @@
 	module Counter #(
-	parameter N = 4, // How many bits the counter can hold and represent in numbers i.e 4 = 4 bits and p to number 16
-	parameter M = 0
+	parameter N = 4 // How many bits the counter can hold and represent in numbers i.e 4 = 4 bits and p to number 16
 )(
 	input logic clock,
 	input logic clear_n,
@@ -28,7 +27,7 @@ logic [N-1:0] count_next;
 
 
 	
-	RegisterFourBit #(.N(N), .M(M)) RFB1(
+	RegisterFourBit #(.N(N)) RFB1(
 		.clock (clock),
 		.clear_n (clear_n),
 		.reset_n (reset_n),

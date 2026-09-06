@@ -8,6 +8,7 @@ module Grid_Memory(
 	input logic [3:0] fsm_write_data,
 	output logic [3:0] fsm_read_data,
 	
+	//PORT B - VGA
 	input logic [4:0] vga_row,
 	input logic [3:0] vga_col,
 	output logic [3:0] vga_read_data

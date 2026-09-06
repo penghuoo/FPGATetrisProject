@@ -3,9 +3,12 @@
 module VGADriver (
 	input logic Clock50MHz,
 	input logic reset_n,
+	/*
 	input logic [1:0] RedControl,
 	input logic [1:0] GreenControl,
 	input logic [1:0] BlueControl,
+	
+	*/
 	
 	output logic Hsync, //Low for 96 lines, then High 704 lines. Increment
 	output logic Vsync, //LOW for 2 lines, then High for 523 lines

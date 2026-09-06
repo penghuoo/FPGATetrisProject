@@ -27,10 +27,10 @@ always_ff @(posedge clk or negedge reset_n) begin
     end
 end
 
-Counter #(.N(20)) C1(
+Counter #.(.N(20)) C1(
 	.clock(clk),
-	.clear_n(~compare1 & q2), // Clears the counter when comparator reaches max value, or if q2 reaches low (Not pressed). If either are 0, then clear_n is triggered
-	.addBy(20'd1),
+	.clear_n(~compare1 & q2), // Clears the counter when comparator reaches max value, or if q2 reaches high (Not pressed). If either are 0, then clear_n is triggered
+	.addBy(10'd1),
 	.enable_n(1'b0), // Run Continuously when not being cleared 
 	.reset_n(reset_n),
 	.count(count1)
@@ -42,5 +42,3 @@ Comparator #(.N(20), .MAX_VAL(1000000)) Comp1(
 	.check(count1),
 	.compare(compare1)
 );
-
-endmodule
