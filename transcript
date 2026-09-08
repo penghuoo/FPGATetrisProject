@@ -1,0 +1,41 @@
+# Compile of tb_Game_FSM.sv was successful.
+# Compile of Game_FSM.sv was successful.
+# Compile of TopLevel.sv was successful.
+# Compile of Comparator.sv was successful.
+# Compile of Counter.sv was successful.
+# Compile of FSM.sv was successful.
+# Compile of Grid_Memory.sv failed with 1 errors.
+# Compile of Input_Debouncer.sv was successful.
+# Compile of RegisterFourBit.sv was successful.
+# Compile of SyncCount.sv was successful.
+# Compile of Tile_Renderer.sv was successful.
+# Compile of VGADriver.sv was successful.
+# 12 compiles, 1 failed with 1 error.
+vsim -gui work.tb_Game_FSM
+# vsim -gui work.tb_Game_FSM 
+# Start time: 13:48:01 on Sep 07,2026
+# Loading sv_std.std
+# Loading work.tb_Game_FSM
+# Loading work.Game_FSM
+# Loading work.Counter
+# Loading work.RegisterFourBit
+# Loading work.Comparator
+# ** Warning: (vsim-3015) [PCDPC] - Port size (1) does not match connection size (3) for port 'enable_n'. The port definition is at: C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Counter.sv(8).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_Game_FSM/GF/C1 File: C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Game_FSM.sv Line: 41
+# ** Warning: (vsim-3015) [PCDPC] - Port size (1) does not match connection size (26) for port 'enable_n'. The port definition is at: C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Counter.sv(8).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_Game_FSM/GF/C2 File: C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Game_FSM.sv Line: 58
+add wave sim:/tb_Game_FSM/GF/*
+run -all
+# ** Note: $stop    : C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/tb_Game_FSM.sv(102)
+#    Time: 1600 ns  Iteration: 0  Instance: /tb_Game_FSM
+# Break in Module tb_Game_FSM at C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/tb_Game_FSM.sv line 102
+add wave sim:/tb_Game_FSM/GF/*
+# Can't move the Now cursor.
+# ** Error: Acs sdne.
+# 
+#        Unable to replace existing ini file (C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TetrisProject.mpf).  File can not be renamed.
+# ** Error: Acs sdne.
+# 
+#        Unable to replace existing ini file (C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TetrisProject.mpf).  File can not be renamed.
+# End time: 16:32:42 on Sep 07,2026, Elapsed time: 2:44:41
+# Errors: 2, Warnings: 5

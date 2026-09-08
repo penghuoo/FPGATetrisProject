@@ -1,0 +1,107 @@
+`timescale 1ns / 1ps
+
+module tb_Game_FSM();
+
+	//Input Signals
+	logic clk;
+	logic reset_n;
+	logic btn_left;
+	logic btn_right;
+	logic btn_drop;
+	logic btn_start;
+	logic btn_rotate;
+	logic [3:0] fsm_read_data;
+	
+	
+	//Output Signals
+	logic [3:0] x_cord;
+	logic [4:0] y_cord;
+	logic [3:0] fsm_write_data;
+	logic write_enable;
+	logic [4:0] t0_row, t1_row, t2_row, t3_row; //Outputs the coordinates for active blocks, t0 representing the anchor block
+	logic [3:0] t0_col, t1_col, t2_col, t3_col;
+
+
+
+Game_FSM GF(
+	.clk(clk),
+   .reset_n(reset_n),
+   .btn_start(btn_start),
+   .btn_left(btn_left),
+   .btn_right(btn_right),
+   .btn_drop(btn_drop),
+   .btn_rotate(btn_rotate),
+	.fsm_read_data(fsm_read_data),
+	
+	.x_cord(x_cord),
+	.y_cord(y_cord),
+   .write_enable(write_enable),
+   .fsm_write_data(fsm_write_data),
+	
+	.t0_row(t0_row), .t1_row(t1_row), .t2_row(t2_row), .t3_row(t3_row), 
+	.t0_col(t0_col), .t1_col(t1_col), .t2_col(t2_col), .t3_col(t3_col)
+	
+
+);
+
+always #5 clk = ~clk;
+
+/*
+initial begin
+
+	//Beginning reset
+	clk = 0;
+	reset_n = 0;
+	btn_start = 0;
+	btn_left = 0; btn_right = 0; btn_drop = 0; btn_rotate = 0;
+	fsm_read_data = 4'b0000;
+	
+	#20;
+	
+	reset_n = 1;
+	
+	#20;
+	btn_start = 1;
+	#10;
+	btn_start = 0;
+	#100;
+        $stop;
+    end
+*/
+initial begin
+        // 1. Initialize safe defaults (preventing floating wires)
+        clk = 0;
+        reset_n = 0; // Assert active-low reset
+        btn_start = 0;
+        btn_left = 0; btn_right = 0; btn_drop = 0; btn_rotate = 0;
+        fsm_read_data = 4'b0000;
+
+        // 2. Release reset after 40ns
+        #40;
+        reset_n = 1;
+
+        // 3. Fire the start button to spawn the piece
+        #40;
+        btn_start = 1;
+        #20; 
+        btn_start = 0;
+
+        // 4. Wait for spawn state to settle
+        #100;
+
+        // 5. Fire btn_drop 12 times to force the piece to row 19+
+        for (int i = 0; i < 12; i = i + 1) begin
+            btn_drop = 1;
+            #20;  // Hold button for one clock cycle
+            btn_drop = 0;
+            #80;  // Wait 4 clock cycles for FSM to process movement
+        end
+
+        // 6. Wait to observe the collision lock state
+        #200;
+        $stop;
+    end
+endmodule
+
+
+

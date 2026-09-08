@@ -26,8 +26,8 @@ logic va_wire;
 
 //Connections from Game_FSM to Tile_Renderer/Grid_Memory
 logic [3:0] Active_Piece_Color;
-logic [4:0] t0c, t1c, t2c, t3c;
-logic [3:0] t0r, t1r, t2r, t3r;
+logic [3:0] t0c, t1c, t2c, t3c;
+logic signed [5:0] t0r, t1r, t2r, t3r;
 
 //Connections from Tile_Renderer to Grid_Memory
 logic [3:0] v_col;
@@ -38,7 +38,7 @@ logic [3:0] Grid_Memory_Color;
 
 //Connections from Game_FSM to Grid Memory
 logic [3:0] x_coordinates;
-logic [4:0] y_coordinates;
+logic signed [5:0] y_coordinates;
 logic write;
 
 //Connections from Grid Memory to Game_FSM
@@ -80,11 +80,11 @@ Game_FSM GF(
 	//Input Ports
 	.clk(clk), // Master clock
 	.reset_n(reset_n), //Reset Button
-	.btn_left(left), //Left Button
-	.btn_right(right), //Right Button
-	.btn_drop(down), //Down Button
+	.btn_left(0), //Left Button
+	.btn_right(0), //Right Button
+	.btn_drop(0), //Down Button
 	.btn_start(1), //Start Button //Look into states
-	.btn_rotate(up),
+	.btn_rotate(start),
 	.fsm_read_data(Grid_Memory_Read), //FSM_read_data reading from grid memory at x_cord and y_cord
 	
 	//Output Ports
@@ -121,6 +121,10 @@ Grid_Memory GM(
 	
 
 );
+
+
+
+//ISOLATED
 //Buttons
 logic left;
 logic right;

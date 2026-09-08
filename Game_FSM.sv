@@ -11,11 +11,11 @@ module Game_FSM(
 	
 	//Output Ports
 	output logic [3:0] x_cord, //Current x cord that game_fsm is rendering
-	output logic [4:0] y_cord, //Current y cord that game_fsm is rendering
+	output logic signed [5:0] y_cord, //Current y cord that game_fsm is rendering
 	output logic [3:0] fsm_write_data, //Wire to grid memory and tile renderer | Outputs the 4 bit color of the current block
 	output logic write_enable, //Enables the grid_memory to write down the current x_cord and y_cord colors into memory array
 	
-	output logic [4:0] t0_row, t1_row, t2_row, t3_row, //Outputs the coordinates for active blocks, t0 representing the anchor block
+	output logic signed [5:0] t0_row, t1_row, t2_row, t3_row, //Outputs the coordinates for active blocks, t0 representing the anchor block
 	output logic [3:0] t0_col, t1_col, t2_col, t3_col //Connect to tile renderer
 
 );
@@ -35,19 +35,20 @@ module Game_FSM(
 	
 // Declare 2 bit piece_type and compare1 variable. Stores the piece type from 0 to 6
 logic [2:0] piece_type;
+logic [2:0] choose;
 logic compare1;
 //Randomizer to choose block that runs continuously in the background resets to 1 through 7
-Counter #(.N(4), .M(1)) C1(
+Counter #(.N(3), .M(1)) C1(
 	.clock(clk),
 	.clear_n(~compare1),
 	.addBy(3'd1),
 	.enable_n(3'b0),
 	.reset_n(reset_n),
-	.count(piece_type)
+	.count(choose)
 );
 
-Comparator #(.N(4), .MAX_VAL(7)) Comp1(
-	.check(piece_type),
+Comparator #(.N(3), .MAX_VAL(7)) Comp1(
+	.check(choose),
 	.compare(compare1)
 );
 
@@ -85,7 +86,7 @@ end
 
 //Variables/Register Declarations
 //Track an active piece's anchor block in the "Center"
-logic [4:0] active_row;
+logic signed [5:0] active_row;
 logic [3:0] active_col;
 
 assign t0_row = active_row;
@@ -112,13 +113,14 @@ logic read_write; // 2 Bit register for 2 clock cycle switching between reading 
 
 
 
+
 // Logic that moves the current state to the next state in the FSM. 
 always_comb begin
 	//Initialize control flags that signal when the data path should update coordinates
 		is_spawning = 0;
       is_falling = 0;
       write_enable = 0;
-		fsm_write_data = piece_type; //Select piece_type for color data
+		fsm_write_data = piece_type;
 		
 	//Start with coordinates at anchor block to prevent errors
 		x_cord = t0_col;
@@ -141,6 +143,7 @@ always_comb begin
 			STATE_SPAWN: //Check to see if spawn location( row: 0, col: 4 ) contains an empty slot in grid memory, if so enter STATE_FALL, otherwise the top has been reached and reset at STATE_IDLE
 			begin
 				is_spawning = 1;
+				fsm_write_data = piece_type;
 				if (fsm_read_data == 4'b0000) begin
 					next_state = STATE_FALL;
 				end else begin
@@ -160,10 +163,12 @@ always_comb begin
 					2'd3: begin x_cord = t3_col; y_cord = t3_row + 1; end
 				endcase
 				
+				is_falling = 1;
+				
 				//Collision Logic
 				if (t0_row == 19 || t1_row == 19 || t2_row == 19 || t3_row == 19 ) begin //Lock block in place when any of the tiles hit the floor
-					next_state = STATE_LOCK;
 					is_falling = 0;
+					next_state = STATE_LOCK;
 				end else if (fsm_read_data != 4'b0000) begin //Lock block when any color is detected below a tile within memory grid
 					is_falling = 0;
 					next_state = STATE_LOCK; 
@@ -179,14 +184,14 @@ always_comb begin
 
 				//4 State clock cycle: Using probe_count to "iterate" through and write every tile through the fsm_write_data port, during each clock cycle
 				//grid[x_cord][y_cord] <= fsm_write_data
-				case(probe_count)
+				case(check_finish)
 					2'd0: begin x_cord = t0_col; y_cord = t0_row; end //Tile1
 					2'd1: begin x_cord = t1_col; y_cord = t1_row; end //Tile2
 					2'd2: begin x_cord = t2_col; y_cord = t2_row; end //Tile3
 					2'd3: begin x_cord = t3_col; y_cord = t3_row; end //Tile4
 				endcase
 			
-				if (probe_count >= 3) begin //Once probe_count writes all 4 tiles move to STATE_SCAN_ROW
+				if (check_finish >= 3) begin //Once probe_count writes all 4 tiles move to STATE_SCAN_ROW
 					next_state = STATE_SCAN_ROW;
 				end else begin	
 					next_state = STATE_LOCK; //Otherwise keep writing tile information until 4 state clock cycle finished
@@ -263,33 +268,56 @@ always_comb begin
 
 	
 	
-	
-	
+logic safe_move;
+logic [1:0] check_finish;
 	
 	//Data Path controls how coordinates are changed on each clock cycle
 always_ff @(posedge clk) begin
 	
+	if (is_falling && probe_count == 3 && fsm_read_data == 4'b0000) begin
+		safe_move <= 1;
+	end
 
+	//Lock piece in
+	if(current_state != STATE_LOCK) begin 
+		check_finish <= 0;
+	end else if(check_finish >= 3) begin
+		check_finish <= 0;
+	end else begin
+		check_finish <= check_finish + 1;
+	end
+	
 	if(!reset_n) begin //Reset coordinates to top of board when reset is hit
-		active_row <= 5'd0;
+		active_row <= 5'd2;
 		active_col <= 4'd4;
+		rotation_state <= 0;
 		read_write <= 0;
+		safe_move <= 0;
 	end else begin 
 		if (is_spawning) begin //Set to top of board in STATE_SPAWN
-			active_row <= 5'd0;
+			active_row <= 5'd2;
 			active_col <= 4'd4;
-		end else if (is_falling && probe_count == 3 && fsm_read_data == 4'b0000) begin //Read button input during STATE_FALL and when no block is detected underneath (probe_count && fsm_read_data)
+			rotation_state <= 0;
+			read_write <= 0;
+			safe_move <= 0;
+			piece_type <= choose;
+		end else if (safe_move) begin //Read button input during STATE_FALL and when no block is detected underneath (probe_count && fsm_read_data)
 			//Figure out logic when taking into account clock later for gravity
 			if(btn_drop) begin
-				active_row <= active_row + 5'd2; //Move two squares down
-			end else if (btn_left) begin
-				active_col <= active_col - 4'd1; //Move left one square
-			end else if (btn_right) begin
-				active_col <= active_col + 4'd1; //Move right one square
+				active_row <= active_row + 5'd2;
+				safe_move <= 0;	//Move two squares down
+			end else if (btn_left && t0_col > 0 && t1_col > 0 && t2_col > 0 && t3_col > 0) begin
+				active_col <= active_col - 4'd1;
+				safe_move <= 0;	//Move left one square
+			end else if (btn_right && t0_col < 9 && t1_col < 9 && t2_col < 9 && t3_col < 9) begin
+				active_col <= active_col + 4'd1;
+				safe_move <= 0;	//Move right one square
 			end else if (btn_rotate) begin
-				rotation_state <= rotation_state + 2'd1; //Increment degrees of rotation by 90
+				rotation_state <= rotation_state + 2'd1;
+				safe_move <= 0;	//Increment degrees of rotation by 90
 			end else if (gravity) begin 
 				active_row <= active_row + 5'd1; //Gravity logic
+				safe_move <= 0;
 			end	
 			
 		end
@@ -336,7 +364,6 @@ always_ff @(posedge clk) begin
 		row_check <= 19;
 	end 
 	
-	
 	//Logic for manipulating temporary row check variable for shifting tiles down
 	if (current_state == STATE_SCAN_ROW && col_check == 9 && fsm_read_data != 4'b0000) begin // When a row is complete (scan state, finished reading entire row with no gaps), set the temporary vairable to same row index
     temp_row_check <= row_check; // Initialize the temporary tracker right before shifting
@@ -357,7 +384,7 @@ always_comb begin
 
 	//Each piece with each tile calculated relative to the anchor tile (active_col and active_row || t0_col and t0_row)
 	case(piece_type)
-	4'd1 : begin //I Block
+	3'd1 : begin //I Block
 		case(rotation_state)
 		2'd0:  begin
 			t1_row = active_row; t1_col = active_col - 1;
@@ -378,7 +405,7 @@ always_comb begin
 			t3_row = active_row - 1; t3_col = active_col; end
 		endcase
 	end
-	4'd2 : begin//TBlock
+	3'd2 : begin//TBlock
 		case(rotation_state)
 		2'd0: begin //Flat T pointing up rotating clockwise
 			t1_row = active_row; t1_col = active_col - 1;
@@ -398,7 +425,7 @@ always_comb begin
 			t3_row = active_row - 1; t3_col = active_col; end
 		endcase
 	end
-	4'd3 : begin //SBlock
+	3'd3 : begin //SBlock
 		case(rotation_state)
 		2'd0: begin //S pointing towards the right
 			t1_row = active_row; t1_col = active_col - 1;
@@ -418,7 +445,7 @@ always_comb begin
 			t3_row = active_row - 1; t3_col = active_col - 1; end
 		endcase
 	end
-	4'd4 : begin//ZBlock
+	3'd4 : begin//ZBlock
 		case(rotation_state)
 		2'd0: begin //Z pointing to the left
 			t1_row = active_row - 1; t1_col = active_col - 1;
@@ -438,7 +465,7 @@ always_comb begin
 			t3_row = active_row - 1; t3_col = active_col; end
 		endcase
 	end
-	4'd5 : begin //JBlock
+	3'd5 : begin //JBlock
 		case(rotation_state)
 		2'd0: begin
 			t1_row = active_row; t1_col = active_col - 1;
@@ -458,7 +485,7 @@ always_comb begin
 			t3_row = active_row - 1; t3_col = active_col; end
 		endcase
 	end
-	4'd6 : begin //LBlock
+	3'd6 : begin //LBlock
 		case(rotation_state)
 		2'd0: begin
 			t1_row = active_row; t1_col = active_col - 1;
@@ -478,6 +505,11 @@ always_comb begin
 			t3_row = active_row - 1; t3_col = active_col; end
 		endcase
 	end
+	3'd7 : begin
+			t1_row = active_row; t1_col = active_col + 1;
+			t2_row = active_row + 1; t2_col = active_col;
+			t3_row = active_row + 1 ; t3_col = active_col + 1; 
+		end
 	endcase
 
 end

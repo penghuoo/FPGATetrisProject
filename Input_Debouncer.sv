@@ -1,4 +1,7 @@
-module Input_Debouncer(
+module Input_Debouncer #(
+	parameter DELAY = 1000000
+
+)(
 	input logic clk,
 	input logic rawsignal,
 	input logic reset_n,
@@ -42,5 +45,8 @@ Comparator #(.N(20), .MAX_VAL(1000000)) Comp1(
 	.check(count1),
 	.compare(compare1)
 );
+
+
+
 
 endmodule

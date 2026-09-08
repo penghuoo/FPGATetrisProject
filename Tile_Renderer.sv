@@ -6,7 +6,7 @@ module Tile_Renderer(
 	input logic [3:0] vga_read_data,
 	
 	input logic [3:0] fsm_write_data, //Color from Game_fsm that represents the chosen piece's color
-	input logic [4:0] t0_row, t1_row, t2_row, t3_row, //Takes input from game_fsm to track and draw active piece
+	input logic signed [5:0] t0_row, t1_row, t2_row, t3_row, //Takes input from game_fsm to track and draw active piece
 	input logic [3:0] t0_col, t1_col, t2_col, t3_col,
 
 	
@@ -44,7 +44,7 @@ always_comb begin
 		RedDisplay = 4'b0000;
 		BlueDisplay = 4'b0000;
 		GreenDisplay = 4'b0000;
-		
+		 
 	end else if (in_playfield && in_piece) begin //If within the playfield and on active piece, display the color output from FSM choosing the active piece color
 		
 		case(fsm_write_data)

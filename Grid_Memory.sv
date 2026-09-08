@@ -3,7 +3,7 @@ module Grid_Memory(
 	
 	//PORT A - Game FSM
 	input logic write_enable,
-	input logic [4:0] fsm_row,
+	input logic signed [5:0] fsm_row,
 	input logic [3:0] fsm_col,
 	input logic [3:0] fsm_write_data,
 	output logic [3:0] fsm_read_data,

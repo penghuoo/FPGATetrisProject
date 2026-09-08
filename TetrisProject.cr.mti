@@ -1,0 +1,76 @@
+C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/tb_Game_FSM.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/tb_Game_FSM.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module tb_Game_FSM
+
+Top level modules:
+	tb_Game_FSM
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Tile_Renderer.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Tile_Renderer.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module Tile_Renderer
+
+Top level modules:
+	Tile_Renderer
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Comparator.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Comparator.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module Comparator
+
+Top level modules:
+	Comparator
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module TopLevel
+
+Top level modules:
+	TopLevel
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/FSM.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/FSM.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module FSM
+
+Top level modules:
+	FSM
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv {0 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module Grid_Memory
+** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(41): (vlog-7061) Variable 'grid' driven in an always_ff block, may not be driven by any other process. See C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(27).
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Input_Debouncer.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Input_Debouncer.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module Input_Debouncer
+
+Top level modules:
+	Input_Debouncer
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/SyncCount.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/SyncCount.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module SyncCount
+
+Top level modules:
+	SyncCount
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Counter.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Counter.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module Counter
+
+Top level modules:
+	Counter
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/RegisterFourBit.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/RegisterFourBit.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module RegisterFourBit
+
+Top level modules:
+	RegisterFourBit
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/VGADriver.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/VGADriver.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module VGADriver
+
+Top level modules:
+	VGADriver
+
+} {} {}}
