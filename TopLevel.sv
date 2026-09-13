@@ -44,6 +44,28 @@ logic write;
 //Connections from Grid Memory to Game_FSM
 logic [3:0] Grid_Memory_Read;
 
+Game_FSM GF(
+	//Input Ports
+	.clk(clk), // Master clock
+	.reset_n(reset_n), //Reset Button
+	.btn_left(left), //Left Button
+	.btn_right(right), //Right Button
+	.btn_drop(start), //Down Button
+	.btn_start(1), //Start Button //Look into states
+	.btn_rotate(up),
+	.fsm_read_data(Grid_Memory_Read), //FSM_read_data reading from grid memory at x_cord and y_cord
+	
+	//Output Ports
+	.x_cord(x_coordinates), //Current x cord that game_fsm is rendering
+	.y_cord(y_coordinates), //Current y cord that game_fsm is rendering
+	.fsm_write_data(Active_Piece_Color), //Wire to grid memory and tile renderer | Outputs the 4 bit color of the current block
+	.write_enable(write), //Enables the grid_memory to write down the current x_cord and y_cord colors into memory array
+	
+	.t0_row(t0r), .t1_row(t1r), .t2_row(t2r), .t3_row(t3r), 
+	.t0_col(t0c), .t1_col(t1c), .t2_col(t2c), .t3_col(t3c)
+
+);
+
 VGADriver VGA(
 	//Inputs
 	.Clock50MHz(clk),
@@ -76,30 +98,11 @@ Tile_Renderer TR(
 	.BlueDisplay(BlueDisplay)
 );
 
-Game_FSM GF(
-	//Input Ports
-	.clk(clk), // Master clock
-	.reset_n(reset_n), //Reset Button
-	.btn_left(0), //Left Button
-	.btn_right(0), //Right Button
-	.btn_drop(0), //Down Button
-	.btn_start(1), //Start Button //Look into states
-	.btn_rotate(start),
-	.fsm_read_data(Grid_Memory_Read), //FSM_read_data reading from grid memory at x_cord and y_cord
-	
-	//Output Ports
-	.x_cord(x_coordinates), //Current x cord that game_fsm is rendering
-	.y_cord(y_coordinates), //Current y cord that game_fsm is rendering
-	.fsm_write_data(Active_Piece_Color), //Wire to grid memory and tile renderer | Outputs the 4 bit color of the current block
-	.write_enable(write), //Enables the grid_memory to write down the current x_cord and y_cord colors into memory array
-	
-	.t0_row(t0r), .t1_row(t1r), .t2_row(t2r), .t3_row(t3r), 
-	.t0_col(t0c), .t1_col(t1c), .t2_col(t2c), .t3_col(t3c)
 
-);
 
 Grid_Memory GM(
 	.clk(clk),
+	.reset_n(reset_n),
 	
 	//PORT A - Game FSM
 	

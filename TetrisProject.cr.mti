@@ -19,12 +19,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb 
 Top level modules:
 	Comparator
 
-} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv {0 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv
 Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
 -- Compiling module TopLevel
-
-Top level modules:
-	TopLevel
+** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(132): (vlog-2388) 'left' already declared in this scope (TopLevel) at C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(51).
+** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(133): (vlog-2388) 'right' already declared in this scope (TopLevel) at C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(52).
+** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(135): (vlog-2388) 'up' already declared in this scope (TopLevel) at C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(55).
+** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(136): (vlog-2388) 'start' already declared in this scope (TopLevel) at C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/TopLevel.sv(53).
 
 } {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/FSM.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/FSM.sv
 Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
@@ -36,7 +37,8 @@ Top level modules:
 } {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv {0 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv
 Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
 -- Compiling module Grid_Memory
-** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(41): (vlog-7061) Variable 'grid' driven in an always_ff block, may not be driven by any other process. See C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(27).
+** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(44): (vlog-7061) Variable 'grid' driven in an always_ff block, may not be driven by any other process. See C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(28).
+** Error (suppressible): C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(50): (vlog-7061) Variable 'grid' driven in an always_ff block, may not be driven by any other process. See C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Grid_Memory.sv(28).
 
 } {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Input_Debouncer.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Input_Debouncer.sv
 Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
@@ -51,6 +53,13 @@ Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb 
 
 Top level modules:
 	SyncCount
+
+} {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Game_FSM.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Game_FSM.sv
+Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021
+-- Compiling module Game_FSM
+
+Top level modules:
+	Game_FSM
 
 } {} {}} C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Counter.sv {1 {vlog -work work -sv -stats=none C:/Users/Steven/Downloads/FPGATetrisProject-main/FPGATetrisProject-main/Counter.sv
 Model Technology ModelSim - Intel FPGA Edition vlog 2021.1 Compiler 2021.02 Feb  3 2021

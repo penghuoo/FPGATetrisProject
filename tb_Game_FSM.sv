@@ -92,8 +92,10 @@ initial begin
         // 5. Fire btn_drop 12 times to force the piece to row 19+
         for (int i = 0; i < 12; i = i + 1) begin
             btn_drop = 1;
+				btn_rotate = 1;
             #20;  // Hold button for one clock cycle
             btn_drop = 0;
+				btn_rotate = 0;
             #80;  // Wait 4 clock cycles for FSM to process movement
         end
 

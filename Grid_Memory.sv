@@ -1,5 +1,6 @@
 module Grid_Memory(
 	input logic clk,
+	input logic reset_n,
 	
 	//PORT A - Game FSM
 	input logic write_enable,
@@ -35,9 +36,18 @@ end
 assign vga_read_data = grid[vga_row][vga_col];
 assign fsm_read_data = grid[fsm_row][fsm_col];
 
-//When write_enable wire is 1, write into the memory grid where ever the FSM is looking at
+
 always_ff @(posedge clk) begin
-	if(write_enable == 1) begin
+
+	if (!reset_n) begin // Reset memory grid when button is pressed
+		for(int r = 0; r < 20; r++) begin
+			for(int c = 0; c < 10; c++) begin
+				grid[r][c] = 4'b0000;
+			end
+		end
+	end
+
+	if(write_enable == 1) begin //When write_enable wire is 1, write into the memory grid where ever the FSM is looking at
 		grid[fsm_row][fsm_col] <= fsm_write_data;
 	end
 end
